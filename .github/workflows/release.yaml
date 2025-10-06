@@ -57,13 +57,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2) Node + кеш npm; registry-url задаём заранее для npm publish (если будет)
+      # 2) Node; registry-url задаём заранее для npm publish (если будет)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
           registry-url: https://registry.npmjs.org
+
+      # 2.5) Кеширование node_modules (если есть lock-файл)
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       # 3) Установка зависимостей (ci, если есть lock; иначе install)
       - name: Install dependencies
@@ -95,4 +103,3 @@ jobs:
           else
             npx --no-install semantic-release
           fi
-
