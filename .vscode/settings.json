@@ -1,0 +1,184 @@
+{
+  // ===========================================================================
+  //                         VSCode Settings
+  // ===========================================================================
+  //
+  // Назначение:
+  //   Настройки VSCode для Go/gRPC проектов с оптимизацией для качества кода,
+  //   производительности и удобной разработки.
+  //
+  // Применение:
+  //   Скопируйте в .vscode/settings.json вашего проекта.
+  // ===========================================================================
+
+  // --- Редактор ---
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.rulers": [100, 120],
+  "editor.tabSize": 4,
+  "editor.insertSpaces": false, // Go использует табы
+  "editor.detectIndentation": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // --- Go настройки ---
+  "go.useLanguageServer": true,
+  "go.lintTool": "golangci-lint",
+  "go.lintOnSave": "package",
+  "go.formatTool": "goimports",
+  "go.formatFlags": [],
+  "go.vetOnSave": "package",
+  "go.buildOnSave": "package",
+  "go.testOnSave": false,
+  "go.coverOnSave": false,
+  "go.autocompleteUnimportedPackages": true,
+  "go.gotoSymbol.includeImports": true,
+  "go.useCodeSnippetsOnFunctionSuggest": true,
+  "go.useCodeSnippetsOnFunctionSuggestWithoutType": true,
+
+  // Go инструменты
+  "go.toolsManagement.autoUpdate": true,
+  "go.toolsEnvVars": {},
+
+  // Тестирование
+  "go.testFlags": ["-v", "-race", "-timeout=5m"],
+  "go.testTimeout": "5m",
+  "go.coverMode": "atomic",
+  "go.coverageOptions": "showCoveredCodeOnly",
+
+  // Build tags
+  "go.buildTags": "",
+  "go.testTags": "",
+
+  // golangci-lint настройки
+  "go.lintFlags": [
+    "--config=${workspaceFolder}/.golangci.yml",
+    "--fast"
+  ],
+
+  // --- Protobuf ---
+  "protoc": {
+    "options": [
+      "--proto_path=${workspaceFolder}/api/proto",
+      "--proto_path=${workspaceFolder}/third_party"
+    ]
+  },
+
+  // --- Файлы ---
+  "files.associations": {
+    "*.proto": "proto3",
+    "*.yaml": "yaml",
+    "*.yml": "yaml",
+    "Makefile": "makefile",
+    "*.mk": "makefile",
+    ".golangci.yml": "yaml",
+    ".releaserc.js": "javascript",
+    "buf.yaml": "yaml",
+    "buf.gen.yaml": "yaml"
+  },
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/*.pb.go": true,
+    "**/*_gen.go": true,
+    "**/__debug_bin": true,
+    "**/.cache": true
+  },
+
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/vendor/**": true,
+    "**/build/**": true,
+    "**/.cache/**": true
+  },
+
+  // --- Поиск ---
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/*.pb.go": true,
+    "**/build": true,
+    "**/.cache": true,
+    "**/dist": true
+  },
+
+  // --- Terminal ---
+  "terminal.integrated.env.linux": {},
+  "terminal.integrated.env.osx": {},
+  "terminal.integrated.env.windows": {},
+
+  // --- Git ---
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+
+  // --- YAML ---
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.{yml,yaml}",
+    "https://json.schemastore.org/dependabot-2.0.json": ".github/dependabot.{yml,yaml}",
+    "https://goreleaser.com/static/schema.json": ".goreleaser.{yml,yaml}"
+  },
+  "yaml.format.enable": true,
+  "yaml.validate": true,
+
+  // --- JSON ---
+  "json.schemas": [
+    {
+      "fileMatch": ["renovate.json", ".renovaterc"],
+      "url": "https://docs.renovatebot.com/renovate-schema.json"
+    }
+  ],
+
+  // --- Markdown ---
+  "markdown.preview.breaks": true,
+  "markdown.extension.toc.levels": "2..6",
+
+  // --- Прочее ---
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4
+  },
+
+  "[proto3]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  }
+}

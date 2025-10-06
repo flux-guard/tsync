@@ -1,0 +1,71 @@
+{
+  // ===========================================================================
+  //                    Рекомендуемые расширения VSCode
+  // ===========================================================================
+  //
+  // Назначение:
+  //   Список рекомендуемых расширений для Go/gRPC разработки.
+  //   VSCode предложит установить эти расширения при открытии проекта.
+  //
+  // Применение:
+  //   Скопируйте в .vscode/extensions.json вашего проекта.
+  // ===========================================================================
+
+  "recommendations": [
+    // --- Go разработка ---
+    "golang.go",                          // Официальное Go расширение от Google
+
+    // --- Protobuf/gRPC ---
+    "bufbuild.vscode-buf",               // Buf для Protobuf
+    "zxh404.vscode-proto3",              // Protobuf syntax highlighting
+
+    // --- Качество кода ---
+    "editorconfig.editorconfig",         // EditorConfig поддержка
+    "streetsidesoftware.code-spell-checker", // Проверка орфографии
+    "streetsidesoftware.code-spell-checker-russian", // Русский словарь
+
+    // --- Git ---
+    "eamodio.gitlens",                   // Расширенная Git интеграция
+    "mhutchie.git-graph",                // Визуализация Git графа
+
+    // --- Markdown ---
+    "yzhang.markdown-all-in-one",        // Markdown инструменты
+    "davidanson.vscode-markdownlint",    // Markdown линтер
+
+    // --- YAML/JSON ---
+    "redhat.vscode-yaml",                // YAML поддержка и валидация
+    "tamasfe.even-better-toml",          // TOML поддержка
+
+    // --- Makefile ---
+    "ms-vscode.makefile-tools",          // Makefile инструменты
+
+    // --- Docker ---
+    "ms-azuretools.vscode-docker",       // Docker поддержка
+
+    // --- Тестирование ---
+    "hbenl.vscode-test-explorer",        // Test Explorer UI
+    "ethan-reesor.vscode-go-test-adapter", // Go Test Adapter
+
+    // --- Утилиты ---
+    "christian-kohler.path-intellisense", // Автодополнение путей
+    "wayou.vscode-todo-highlight",       // TODO подсветка
+    "gruntfuggly.todo-tree",             // TODO дерево
+    "aaron-bond.better-comments",        // Улучшенные комментарии
+
+    // --- REST API ---
+    "humao.rest-client",                 // REST клиент
+
+    // --- Безопасность ---
+    "snyk-security.snyk-vulnerability-scanner", // Snyk сканер уязвимостей
+
+    // --- Прочее ---
+    "usernamehw.errorlens",              // Отображение ошибок inline
+    "oderwat.indent-rainbow",            // Цветные отступы
+    "mechatroner.rainbow-csv"            // CSV подсветка
+  ],
+
+  // Нежелательные расширения (конфликтуют или не нужны)
+  "unwantedRecommendations": [
+    "ms-vscode.go"  // Старое Go расширение (используйте golang.go)
+  ]
+}

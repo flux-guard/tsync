@@ -1,0 +1,195 @@
+{
+  // ===========================================================================
+  //                          VSCode Tasks
+  // ===========================================================================
+  //
+  // Назначение:
+  //   Определяет задачи для быстрого выполнения команд разработки из VSCode.
+  //   Используется для сборки, тестирования, линтинга и других операций.
+  //
+  // Применение:
+  //   Скопируйте в .vscode/tasks.json вашего проекта.
+  //
+  // Использование:
+  //   - Cmd+Shift+B (macOS) / Ctrl+Shift+B (Linux/Windows) - запуск build задачи
+  //   - Cmd+Shift+P -> "Tasks: Run Task" - выбор и запуск любой задачи
+  // ===========================================================================
+
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // Сборка проекта
+      "label": "go: сборка",
+      "type": "shell",
+      "command": "make",
+      "args": ["build"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      // Запуск тестов
+      "label": "go: тесты",
+      "type": "shell",
+      "command": "make",
+      "args": ["test"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      // Запуск тестов с coverage
+      "label": "go: тесты с coverage",
+      "type": "shell",
+      "command": "make",
+      "args": ["go-test-coverage"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      // Линтинг
+      "label": "go: линтинг",
+      "type": "shell",
+      "command": "make",
+      "args": ["lint"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      // Форматирование
+      "label": "go: форматирование",
+      "type": "shell",
+      "command": "make",
+      "args": ["fmt"],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      // Генерация protobuf
+      "label": "protobuf: генерация",
+      "type": "shell",
+      "command": "make",
+      "args": ["go-proto-gen"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      // Buf lint
+      "label": "protobuf: линтинг",
+      "type": "shell",
+      "command": "buf",
+      "args": ["lint"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      // Установка зависимостей
+      "label": "go: установить зависимости",
+      "type": "shell",
+      "command": "make",
+      "args": ["deps"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      // Очистка
+      "label": "очистить",
+      "type": "shell",
+      "command": "make",
+      "args": ["clean"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      // Запуск приложения
+      "label": "go: запустить",
+      "type": "shell",
+      "command": "make",
+      "args": ["go-run"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*Starting.*$",
+          "endsPattern": "^.*Server started.*$"
+        }
+      }
+    },
+    {
+      // Проверка безопасности
+      "label": "go: проверка безопасности",
+      "type": "shell",
+      "command": "make",
+      "args": ["go-security"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      // Запуск всех проверок
+      "label": "go: все проверки",
+      "type": "shell",
+      "command": "make",
+      "args": ["go-check-all"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      // Docker build
+      "label": "docker: сборка образа",
+      "type": "shell",
+      "command": "make",
+      "args": ["docker-build"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}

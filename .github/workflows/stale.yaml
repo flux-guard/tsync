@@ -1,0 +1,60 @@
+name: Stale Issues and PRs
+
+# ==============================================================================
+# Назначение:
+#   Автоматическое закрытие устаревших issues и PR.
+# ==============================================================================
+
+on:
+  schedule:
+    # Запуск каждый день в 00:00 UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: Mark Stale Issues and PRs
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Issues
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had
+            recent activity. It will be closed if no further activity occurs within 7 days.
+            Thank you for your contributions.
+
+          close-issue-message: |
+            This issue has been automatically closed due to inactivity.
+            Please feel free to reopen if this is still relevant.
+
+          stale-issue-label: 'stale'
+          exempt-issue-labels: 'pinned,security,bug'
+          days-before-issue-stale: 60
+          days-before-issue-close: 7
+
+          # Pull Requests
+          stale-pr-message: |
+            This PR has been automatically marked as stale because it has not had
+            recent activity. It will be closed if no further activity occurs within 14 days.
+
+          close-pr-message: |
+            This PR has been automatically closed due to inactivity.
+            Please rebase and reopen if you wish to continue working on this.
+
+          stale-pr-label: 'stale'
+          exempt-pr-labels: 'pinned,security,work-in-progress'
+          days-before-pr-stale: 90
+          days-before-pr-close: 14
+
+          # General settings
+          operations-per-run: 100
+          remove-stale-when-updated: true
+          ascending: true

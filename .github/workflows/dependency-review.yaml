@@ -1,0 +1,54 @@
+name: Dependency Review
+
+# ==============================================================================
+# Назначение:
+#   GitHub Actions workflow для проверки зависимостей в Pull Requests.
+#   Обнаруживает уязвимости и проблемы с лицензиями.
+# ==============================================================================
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    name: Review Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Уровень severity для fail
+          fail-on-severity: moderate
+
+          # Запрещенные лицензии
+          deny-licenses: GPL-2.0, GPL-3.0, AGPL-3.0
+
+          # Разрешенные лицензии
+          allow-licenses: MIT, Apache-2.0, BSD-3-Clause, ISC
+
+          # Комментарий в PR
+          comment-summary-in-pr: always
+
+          # Создать issue при обнаружении проблем
+          warn-only: false
+
+          # Проверка на устаревшие зависимости
+          fail-on-scopes: runtime, development
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: dependency-review-results.sarif

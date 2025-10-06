@@ -1,0 +1,23 @@
+{
+  "name": "project-commit-tools",
+  "version": "1.0.0",
+  "description": "Commit quality tooling with commitlint and commitizen",
+  "private": true,
+  "scripts": {
+    "commit": "cz",
+    "commitlint": "commitlint --edit",
+    "commitlint:check": "commitlint --from=HEAD~1 --to=HEAD --verbose"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@commitlint/types": "^18.4.3",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0"
+  }
+}

@@ -1,0 +1,117 @@
+# ==============================================================================
+#                           Git Attributes
+# ==============================================================================
+#
+# Назначение:
+#   Определяет атрибуты для путей в Git репозитории: line endings, diff,
+#   merge стратегии и другие настройки обработки файлов.
+#
+# Документация: https://git-scm.com/docs/gitattributes
+# ==============================================================================
+
+# --- Auto detect text files and normalize line endings ---
+* text=auto
+
+# --- Source Code ---
+*.go            text eol=lf diff=golang
+*.proto         text eol=lf
+*.mod           text eol=lf
+*.sum           text eol=lf
+
+# --- Scripts ---
+*.sh            text eol=lf
+*.bash          text eol=lf
+Makefile        text eol=lf
+*.mk            text eol=lf
+
+# --- Configuration Files ---
+*.yaml          text eol=lf
+*.yml           text eol=lf
+*.toml          text eol=lf
+*.json          text eol=lf
+*.xml           text eol=lf
+
+# --- Documentation ---
+*.md            text eol=lf diff=markdown
+*.txt           text eol=lf
+LICENSE         text eol=lf
+AUTHORS         text eol=lf
+CHANGELOG       text eol=lf
+
+# --- Web Files ---
+*.html          text eol=lf diff=html
+*.css           text eol=lf
+*.js            text eol=lf
+*.ts            text eol=lf
+
+# --- Docker ---
+Dockerfile      text eol=lf
+*.dockerfile    text eol=lf
+.dockerignore   text eol=lf
+
+# --- CI/CD ---
+.gitignore      text eol=lf
+.gitattributes  text eol=lf
+.editorconfig   text eol=lf
+
+# --- Binary Files ---
+# Explicitly mark as binary to prevent modification
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.ico           binary
+*.svg           binary
+*.webp          binary
+
+# Archives
+*.zip           binary
+*.tar           binary
+*.gz            binary
+*.tgz           binary
+*.bz2           binary
+*.7z            binary
+
+# Executables
+*.exe           binary
+*.dll           binary
+*.so            binary
+*.dylib         binary
+
+# Fonts
+*.ttf           binary
+*.otf           binary
+*.woff          binary
+*.woff2         binary
+*.eot           binary
+
+# Other
+*.pdf           binary
+*.db            binary
+*.sqlite        binary
+
+# --- Generated Files ---
+# Mark generated code (won't be modified by Git)
+*.pb.go         linguist-generated=true
+*.gen.go        linguist-generated=true
+gen/**          linguist-generated=true
+
+# --- Go-specific Diff ---
+# Better diff for Go files
+*.go            diff=golang
+
+# --- Merge Strategies ---
+# Use 'ours' strategy for certain files in merge conflicts
+# CHANGELOG.md  merge=ours
+# go.sum        merge=union
+
+# --- Export-ignore ---
+# Don't include in archives created by git archive
+.gitattributes  export-ignore
+.gitignore      export-ignore
+.github/        export-ignore
+.vscode/        export-ignore
+.idea/          export-ignore
+test/           export-ignore
+docs/           export-ignore
+*.test          export-ignore

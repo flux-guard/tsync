@@ -1,0 +1,216 @@
+# ==============================================================================
+#                   Pre-commit Hooks Configuration
+# ==============================================================================
+#
+# Назначение:
+#   Комплексная конфигурация pre-commit hooks для автоматических проверок
+#   перед коммитом. Включает проверки для Go, Git, YAML, и общие проверки.
+#
+# Установка:
+#   pip install pre-commit
+#   pre-commit install
+#   pre-commit install --hook-type commit-msg
+#
+# Использование:
+#   pre-commit run --all-files           # Запустить на всех файлах
+#   pre-commit run <hook-id>             # Запустить конкретный hook
+#   pre-commit autoupdate                # Обновить версии hooks
+#
+# Документация: https://pre-commit.com
+# ==============================================================================
+
+# Минимальная версия pre-commit
+minimum_pre_commit_version: '3.0.0'
+
+# Fail fast - остановить выполнение при первой ошибке
+fail_fast: false
+
+# Репозитории с hooks
+repos:
+  # ----------------------------------------------------------------------------
+  # Стандартные pre-commit hooks
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # Git проверки
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: check-vcs-permalinks
+      - id: forbid-new-submodules
+      - id: no-commit-to-branch
+        args: ['--branch', 'main', '--branch', 'master']
+
+      # Файловые проверки
+      - id: check-case-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: ['--markdown-linebreak-ext=md']
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+      # Содержимое файлов
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: ['--allow-missing-credentials']
+
+      # JSON/YAML/TOML
+      - id: check-json
+      - id: check-yaml
+        args: ['--allow-multiple-documents']
+      - id: check-toml
+      - id: pretty-format-json
+        args: ['--autofix', '--indent=2', '--no-sort-keys']
+
+  # ----------------------------------------------------------------------------
+  # Commitlint - проверка commit messages
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.11.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ['@commitlint/config-conventional']
+
+  # ----------------------------------------------------------------------------
+  # Go hooks
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      # Форматирование
+      - id: go-fmt
+      - id: go-imports
+
+      # Статический анализ
+      - id: go-vet
+      - id: go-lint
+
+      # Сборка
+      - id: go-build
+        args: ['-v']
+
+      # Тесты
+      - id: go-unit-tests
+        args: ['-v', '-race', '-timeout=30s']
+
+      # Модули
+      - id: go-mod-tidy
+
+  # ----------------------------------------------------------------------------
+  # Golangci-lint - комплексный линтер
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.55.2
+    hooks:
+      - id: golangci-lint
+        args:
+          - '--config=.golangci.yml'
+          - '--timeout=5m'
+
+  # ----------------------------------------------------------------------------
+  # Markdown проверки
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+
+  # ----------------------------------------------------------------------------
+  # Shell scripts проверки
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.6
+    hooks:
+      - id: shellcheck
+        args: ['-x']
+
+  # ----------------------------------------------------------------------------
+  # YAML linting
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args: ['-d', '{extends: default, rules: {line-length: {max: 120}, document-start: disable}}']
+
+  # ----------------------------------------------------------------------------
+  # Dockerfile linting
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+
+  # ----------------------------------------------------------------------------
+  # Security scanning
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.1
+    hooks:
+      - id: gitleaks
+
+  # ----------------------------------------------------------------------------
+  # Проверка зависимостей
+  # ----------------------------------------------------------------------------
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+
+  # ----------------------------------------------------------------------------
+  # Локальные hooks
+  # ----------------------------------------------------------------------------
+  - repo: local
+    hooks:
+      # Проверка buf (если есть .proto файлы)
+      - id: buf-lint
+        name: buf lint
+        entry: buf lint
+        language: system
+        files: \.proto$
+        pass_filenames: false
+
+      - id: buf-breaking
+        name: buf breaking
+        entry: buf breaking --against '.git#branch=main'
+        language: system
+        files: \.proto$
+        pass_filenames: false
+
+      # Проверка go.mod и go.sum синхронизации
+      - id: go-mod-verify
+        name: go mod verify
+        entry: go mod verify
+        language: system
+        files: go\.(mod|sum)$
+        pass_filenames: false
+
+      # Запрет TODO в production коде (можно раскомментировать)
+      # - id: no-todos
+      #   name: No TODOs in code
+      #   entry: 'TODO|FIXME|HACK'
+      #   language: pygrep
+      #   files: \.(go|js|ts|py)$
+      #   exclude: '_test\.go$'
+
+# Глобальные exclude patterns
+exclude: |
+  (?x)^(
+      \.git/|
+      \.idea/|
+      \.vscode/|
+      node_modules/|
+      vendor/|
+      dist/|
+      build/|
+      .*\.pb\.go$|
+      .*\.gen\.go$|
+      go\.sum$
+  )
